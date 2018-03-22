@@ -1,0 +1,1134 @@
+{
+	"info": {
+		"name": "Ciscolive",
+		"_postman_id": "a8bbef13-35f9-09a6-692c-54db448096da",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Runner - create fvAp",
+			"description": "",
+			"item": [
+				{
+					"name": "Login.json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "App Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvAp\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-{{tn_name}}/ap-{{fvAp_name}}\", \n      \"name\": \"{{fvAp_name}}\", \n      \"nameAlias\": \"\", \n      \"ownerKey\": \"\", \n      \"ownerTag\": \"\", \n      \"prio\": \"unspecified\", \n      \"status\": \"{{status_is}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Single EPG",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-{{tn_name}}/ap-{{fvAp_name}}/epg-{{fvAEPg_name}}\", \n      \"fwdCtrl\": \"\", \n      \"isAttrBasedEPg\": \"no\", \n      \"matchT\": \"AtleastOne\", \n      \"name\": \"{{fvAEPg_name}}\", \n      \"nameAlias\": \"\", \n      \"pcEnfPref\": \"unenforced\", \n      \"prefGrMemb\": \"exclude\", \n      \"prio\": \"unspecified\", \n      \"status\": \"{{status_is}}\"\n    }, \n    \"children\": [\n      {\n        \"fvRsProv\": {\n          \"attributes\": {\n            \"matchT\": \"AtleastOne\", \n            \"prio\": \"unspecified\", \n            \"status\": \"{{status_is}}\", \n            \"tnVzBrCPName\": \"{{provided_contract}}\"\n          }\n        }\n      }, \n      {\n        \"fvRsDomAtt\": {\n          \"attributes\": {\n            \"classPref\": \"encap\", \n            \"delimiter\": \"\", \n            \"encap\": \"unknown\", \n            \"encapMode\": \"auto\", \n            \"epgCos\": \"Cos0\", \n            \"epgCosPref\": \"disabled\", \n            \"instrImedcy\": \"lazy\", \n            \"netflowDir\": \"both\", \n            \"netflowPref\": \"disabled\", \n            \"primaryEncap\": \"unknown\", \n            \"resImedcy\": \"immediate\", \n            \"status\": \"{{status_is}}\", \n            \"tDn\": \"uni/vmmp-VMware/dom-{{vmm_name}}\"\n          }\n        }\n      }, \n      {\n        \"fvRsCustQosPol\": {\n          \"attributes\": {\n            \"tnQosCustomPolName\": \"\"\n          }\n        }\n      }, \n      {\n        \"fvRsBd\": {\n          \"attributes\": {\n            \"status\": \"{{status_is}}\", \n            \"tnFvBDName\": \"{{tnFvBDName}}\"\n          }\n        }\n      }\n    ]\n  }\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get fvAEPg in specific Tenant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://{{APIC}}/api/node/class/fvAEPg.json?query-target-filter=and(wcard(fvAEPg.dn,\"tn-Ciscolive\"))",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"fvAEPg.json"
+							],
+							"query": [
+								{
+									"key": "query-target-filter",
+									"value": "and(wcard(fvAEPg.dn,\"tn-Ciscolive\"))",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Runner - create fvAp with fvAEPg",
+			"description": "",
+			"item": [
+				{
+					"name": "3 tier app",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"fvAp\": {\n        \"attributes\": {\n          \"descr\": \"\", \n          \"dn\": \"uni/tn-Ciscolive/ap-{{fvAp_name}}\", \n          \"name\": \"{{fvAp_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\", \n          \"prio\": \"unspecified\",\n          \"status\": \"{{status_is}}\"\n        }, \n        \"children\": [\n          {\n            \"fvAEPg\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"fwdCtrl\": \"\", \n                \"isAttrBasedEPg\": \"no\", \n                \"matchT\": \"AtleastOne\", \n                \"name\": \"DB\", \n                \"nameAlias\": \"\", \n                \"pcEnfPref\": \"unenforced\", \n                \"prefGrMemb\": \"exclude\", \n                \"prio\": \"unspecified\"\n              }, \n              \"children\": [\n                {\n                  \"fvRsDomAtt\": {\n                    \"attributes\": {\n                      \"classPref\": \"encap\", \n                      \"delimiter\": \"\", \n                      \"encap\": \"unknown\", \n                      \"encapMode\": \"auto\", \n                      \"epgCos\": \"Cos0\", \n                      \"epgCosPref\": \"disabled\", \n                      \"instrImedcy\": \"lazy\", \n                      \"netflowDir\": \"both\", \n                      \"netflowPref\": \"disabled\", \n                      \"primaryEncap\": \"unknown\", \n                      \"resImedcy\": \"immediate\", \n                      \"tDn\": \"uni/vmmp-VMware/dom-Ciscolive-vds-01\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsCustQosPol\": {\n                    \"attributes\": {\n                      \"tnQosCustomPolName\": \"\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsBd\": {\n                    \"attributes\": {\n                      \"tnFvBDName\": \"192.168.12.x_24\"\n                    }\n                  }\n                }\n              ]\n            }\n          }, \n          {\n            \"fvAEPg\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"fwdCtrl\": \"\", \n                \"isAttrBasedEPg\": \"no\", \n                \"matchT\": \"AtleastOne\", \n                \"name\": \"App\", \n                \"nameAlias\": \"\", \n                \"pcEnfPref\": \"unenforced\", \n                \"prefGrMemb\": \"exclude\", \n                \"prio\": \"unspecified\"\n              }, \n              \"children\": [\n                {\n                  \"fvRsProv\": {\n                    \"attributes\": {\n                      \"matchT\": \"AtleastOne\", \n                      \"prio\": \"unspecified\", \n                      \"tnVzBrCPName\": \"shared_L3out\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsDomAtt\": {\n                    \"attributes\": {\n                      \"classPref\": \"encap\", \n                      \"delimiter\": \"\", \n                      \"encap\": \"unknown\", \n                      \"encapMode\": \"auto\", \n                      \"epgCos\": \"Cos0\", \n                      \"epgCosPref\": \"disabled\", \n                      \"instrImedcy\": \"lazy\", \n                      \"netflowDir\": \"both\", \n                      \"netflowPref\": \"disabled\", \n                      \"primaryEncap\": \"unknown\", \n                      \"resImedcy\": \"immediate\", \n                      \"tDn\": \"uni/vmmp-VMware/dom-Ciscolive-vds-01\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsCustQosPol\": {\n                    \"attributes\": {\n                      \"tnQosCustomPolName\": \"\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsBd\": {\n                    \"attributes\": {\n                      \"tnFvBDName\": \"192.168.11.x_24\"\n                    }\n                  }\n                }\n              ]\n            }\n          }, \n          {\n            \"fvAEPg\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"fwdCtrl\": \"\", \n                \"isAttrBasedEPg\": \"no\", \n                \"matchT\": \"AtleastOne\", \n                \"name\": \"Web\", \n                \"nameAlias\": \"\", \n                \"pcEnfPref\": \"unenforced\", \n                \"prefGrMemb\": \"exclude\", \n                \"prio\": \"unspecified\"\n              }, \n              \"children\": [\n                {\n                  \"fvRsProv\": {\n                    \"attributes\": {\n                      \"matchT\": \"AtleastOne\", \n                      \"prio\": \"unspecified\", \n                      \"tnVzBrCPName\": \"shared_L3out\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsDomAtt\": {\n                    \"attributes\": {\n                      \"classPref\": \"encap\", \n                      \"delimiter\": \"\", \n                      \"encap\": \"unknown\", \n                      \"encapMode\": \"auto\", \n                      \"epgCos\": \"Cos0\", \n                      \"epgCosPref\": \"disabled\", \n                      \"instrImedcy\": \"lazy\", \n                      \"netflowDir\": \"both\", \n                      \"netflowPref\": \"disabled\", \n                      \"primaryEncap\": \"unknown\", \n                      \"resImedcy\": \"immediate\", \n                      \"tDn\": \"uni/vmmp-VMware/dom-Ciscolive-vds-01\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsCustQosPol\": {\n                    \"attributes\": {\n                      \"tnQosCustomPolName\": \"\"\n                    }\n                  }\n                }, \n                {\n                  \"fvRsBd\": {\n                    \"attributes\": {\n                      \"tnFvBDName\": \"192.168.10.x_24\"\n                    }\n                  }\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Runner - create fvBD (Bridge Domain with G/W)",
+			"description": "",
+			"item": [
+				{
+					"name": "Login.json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Single BD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"fvBD\": {\n        \"attributes\": {\n          \"OptimizeWanBandwidth\": \"no\", \n          \"arpFlood\": \"no\", \n          \"descr\": \"\", \n          \"dn\": \"uni/tn-{{tn_name}}/BD-{{fvBD_name}}\", \n          \"epClear\": \"no\", \n          \"epMoveDetectMode\": \"\", \n          \"intersiteBumTrafficAllow\": \"no\", \n          \"intersiteL2Stretch\": \"no\", \n          \"ipLearning\": \"yes\", \n          \"limitIpLearnToSubnets\": \"yes\", \n          \"llAddr\": \"::\", \n          \"mac\": \"00:22:BD:F8:19:FF\", \n          \"mcastAllow\": \"no\", \n          \"multiDstPktAct\": \"bd-flood\", \n          \"name\": \"{{fvBD_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\",\n          \"status\": \"{{status_is}}\",\n          \"type\": \"regular\", \n          \"unicastRoute\": \"yes\", \n          \"unkMacUcastAct\": \"proxy\", \n          \"unkMcastAct\": \"flood\", \n          \"vmac\": \"not-applicable\"\n        }, \n        \"children\": [\n          {\n            \"fvSubnet\": {\n              \"attributes\": {\n                \"ctrl\": \"nd\", \n                \"descr\": \"\", \n                \"ip\": \"{{ip_gateway}}\", \n                \"name\": \"\", \n                \"nameAlias\": \"\", \n                \"preferred\": \"no\", \n                \"scope\": \"{{scope}}\", \n                \"virtual\": \"no\"\n              }\n            }\n          }, \n          {\n            \"fvRsIgmpsn\": {\n              \"attributes\": {\n                \"tnIgmpSnoopPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsCtx\": {\n              \"attributes\": {\n                \"tnFvCtxName\": \"{{tnFvCtx_name}}\"\n              }\n            }\n          }, \n          {\n            \"fvRsBdToEpRet\": {\n              \"attributes\": {\n                \"resolveAct\": \"resolve\", \n                \"tnFvEpRetPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsBDToOut\": {\n              \"attributes\": {\n                \"tnL3extOutName\": \"{{tnL3extOut_name}}\"\n              }\n            }\n          }, \n          {\n            \"fvRsBDToNdP\": {\n              \"attributes\": {\n                \"tnNdIfPolName\": \"\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Runner - create Leaf Profile (Leaf based)",
+			"description": "",
+			"item": [
+				{
+					"name": "Login.json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Leaf Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"infraAccPortP\": {\n        \"attributes\": {\n          \"descr\": \"{{description}}\", \n          \"dn\": \"uni/infra/accportprof-{{leaf_profile_name}}\", \n          \"name\": \"{{leaf_profile_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\", \n          \"status\": \"{{status_is}}\"\n        }, \n        \"children\": [\n          {\n            \"infraHPortS\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"name\": \"{{description_of_attached_devices}}\", \n                \"nameAlias\": \"\", \n                \"ownerKey\": \"\", \n                \"ownerTag\": \"\", \n                \"status\": \"{{status_is}}\", \n                \"type\": \"range\"\n              }, \n              \"children\": [\n                {\n                  \"infraRsAccBaseGrp\": {\n                    \"attributes\": {\n                      \"fexId\": \"101\", \n                      \"tDn\": \"uni/infra/funcprof/accportgrp-{{interface_policy_group}}\"\n                    }\n                  }\n                }, \n                {\n                  \"infraPortBlk\": {\n                    \"attributes\": {\n                      \"descr\": \"{{description_of_attached_device}}\", \n                      \"fromCard\": \"1\", \n                      \"fromPort\": \"{{interface_number}}\", \n                      \"name\": \"{{interface_number}}\", \n                      \"nameAlias\": \"\", \n                      \"status\": \"{{status_is}}\", \n                      \"toCard\": \"1\", \n                      \"toPort\": \"{{interface_number}}\"\n                    }\n                  }\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Switch Profile - Leaf_101_and_102",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"infraNodeP\": {\n        \"attributes\": {\n          \"descr\": \"\", \n          \"dn\": \"uni/infra/nprof-Leaf_101_and_102\", \n          \"name\": \"Leaf_101_and_102\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\"\n        }, \n        \"children\": [\n          {\n            \"infraRsAccPortP\": {\n              \"attributes\": {\n                \"tDn\": \"uni/infra/accportprof-{{leaf_profile_name}}\",\n                \"status\": \"{{status_is}}\"\n              }\n            }\n          }, \n          {\n            \"infraLeafS\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"name\": \"Leaf-101\", \n                \"nameAlias\": \"\", \n                \"ownerKey\": \"\", \n                \"ownerTag\": \"\", \n                \"type\": \"range\"\n              }, \n              \"children\": [\n                {\n                  \"infraNodeBlk\": {\n                    \"attributes\": {\n                      \"descr\": \"\", \n                      \"from_\": \"101\", \n                      \"name\": \"99f440e8ae385770\", \n                      \"nameAlias\": \"\", \n                      \"to_\": \"101\"\n                    }\n                  }\n                }\n              ]\n            }\n          }, \n          {\n            \"infraLeafS\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"name\": \"Leaf-102\", \n                \"nameAlias\": \"\", \n                \"ownerKey\": \"\", \n                \"ownerTag\": \"\", \n                \"type\": \"range\"\n              }, \n              \"children\": [\n                {\n                  \"infraNodeBlk\": {\n                    \"attributes\": {\n                      \"descr\": \"\", \n                      \"from_\": \"102\", \n                      \"name\": \"94e47a99a8c7c628\", \n                      \"nameAlias\": \"\", \n                      \"to_\": \"102\"\n                    }\n                  }\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Runner - create Leaf Profile (Attached device based)",
+			"description": "",
+			"item": [
+				{
+					"name": "Login.json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Leaf Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"infraAccPortP\": {\n        \"attributes\": {\n          \"descr\": \"{{description}}\", \n          \"dn\": \"uni/infra/accportprof-{{leaf_profile_name}}\", \n          \"name\": \"{{leaf_profile_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\", \n          \"status\": \"{{status_is}}\"\n        }, \n        \"children\": [\n          {\n            \"infraHPortS\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"name\": \"{{description_of_attached_devices}}\", \n                \"nameAlias\": \"\", \n                \"ownerKey\": \"\", \n                \"ownerTag\": \"\", \n                \"status\": \"{{status_is}}\", \n                \"type\": \"range\"\n              }, \n              \"children\": [\n                {\n                  \"infraRsAccBaseGrp\": {\n                    \"attributes\": {\n                      \"fexId\": \"101\", \n                      \"tDn\": \"uni/infra/funcprof/accportgrp-{{interface_policy_group}}\"\n                    }\n                  }\n                }, \n                {\n                  \"infraPortBlk\": {\n                    \"attributes\": {\n                      \"descr\": \"{{description_of_attached_device}}\", \n                      \"fromCard\": \"1\", \n                      \"fromPort\": \"{{interface_number}}\", \n                      \"name\": \"{{interface_number}}\", \n                      \"nameAlias\": \"\", \n                      \"status\": \"{{status_is}}\", \n                      \"toCard\": \"1\", \n                      \"toPort\": \"{{interface_number}}\"\n                    }\n                  }\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Switch Profile - all Leafs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"infraNodeP\": {\n        \"attributes\": {\n          \"descr\": \"\", \n          \"dn\": \"uni/infra/nprof-All_Leafs\", \n          \"name\": \"All_Leafs\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\"\n        }, \n        \"children\": [\n          {\n            \"infraRsAccPortP\": {\n              \"attributes\": {\n                \"status\": \"{{status_is}}\", \n                \"tDn\": \"uni/infra/accportprof-{{leaf_profile_name}}\"\n              }\n            }\n          }, \n          {\n            \"infraLeafS\": {\n              \"attributes\": {\n                \"descr\": \"\", \n                \"name\": \"All_Leafs\", \n                \"nameAlias\": \"\", \n                \"ownerKey\": \"\", \n                \"ownerTag\": \"\", \n                \"type\": \"range\"\n              }, \n              \"children\": [\n                {\n                  \"infraNodeBlk\": {\n                    \"attributes\": {\n                      \"descr\": \"\", \n                      \"from_\": \"101\", \n                      \"name\": \"69ef99720e2330a6\", \n                      \"nameAlias\": \"\", \n                      \"to_\": \"103\"\n                    }\n                  }\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Runner - create fvAp, fvAEPg, fvBD (L2 extension)",
+			"description": "",
+			"item": [
+				{
+					"name": "Login.json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Single BD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"fvBD\": {\n        \"attributes\": {\n          \"OptimizeWanBandwidth\": \"no\", \n          \"arpFlood\": \"no\", \n          \"descr\": \"\", \n          \"dn\": \"uni/tn-{{tn_name}}/BD-{{fvBD_name}}\", \n          \"epClear\": \"no\", \n          \"epMoveDetectMode\": \"\", \n          \"intersiteBumTrafficAllow\": \"no\", \n          \"intersiteL2Stretch\": \"no\", \n          \"ipLearning\": \"yes\", \n          \"limitIpLearnToSubnets\": \"yes\", \n          \"llAddr\": \"::\", \n          \"mac\": \"00:22:BD:F8:19:FF\", \n          \"mcastAllow\": \"no\", \n          \"multiDstPktAct\": \"bd-flood\", \n          \"name\": \"{{fvBD_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\", \n          \"status\": \"{{status_is}}\", \n          \"type\": \"regular\", \n          \"unicastRoute\": \"no\", \n          \"unkMacUcastAct\": \"flood\", \n          \"unkMcastAct\": \"flood\", \n          \"vmac\": \"not-applicable\"\n        }, \n        \"children\": [\n          {\n            \"fvRsIgmpsn\": {\n              \"attributes\": {\n                \"tnIgmpSnoopPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsCtx\": {\n              \"attributes\": {\n                \"tnFvCtxName\": \"{{tnFvCtx_name}}\"\n              }\n            }\n          }, \n          {\n            \"fvRsBdToEpRet\": {\n              \"attributes\": {\n                \"resolveAct\": \"resolve\", \n                \"tnFvEpRetPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsBDToNdP\": {\n              \"attributes\": {\n                \"tnNdIfPolName\": \"\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "App Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvAp\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-{{tn_name}}/ap-{{fvAp_name}}\", \n      \"name\": \"{{fvAp_name}}\", \n      \"nameAlias\": \"\", \n      \"ownerKey\": \"\", \n      \"ownerTag\": \"\", \n      \"prio\": \"unspecified\", \n      \"status\": \"{{status_is}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Single EPG",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-{{tn_name}}/ap-{{fvAp_name}}/epg-{{fvAEPg_name}}\", \n      \"fwdCtrl\": \"\", \n      \"isAttrBasedEPg\": \"no\", \n      \"matchT\": \"AtleastOne\", \n      \"name\": \"{{fvAEPg_name}}\", \n      \"nameAlias\": \"\", \n      \"pcEnfPref\": \"unenforced\", \n      \"prefGrMemb\": \"exclude\", \n      \"prio\": \"unspecified\", \n      \"status\": \"{{status_is}}\"\n    }, \n    \"children\": [\n      {\n        \"fvRsPathAtt\": {\n          \"attributes\": {\n            \"descr\": \"\", \n            \"encap\": \"{{vlan}}\", \n            \"instrImedcy\": \"lazy\", \n            \"mode\": \"regular\", \n            \"primaryEncap\": \"unknown\", \n            \"tDn\": \"topology/pod-1/protpaths-101-102/pathep-{{path}}\"\n          }\n        }\n      }, \n      {\n        \"fvRsDomAtt\": {\n          \"attributes\": {\n            \"classPref\": \"encap\", \n            \"delimiter\": \"\", \n            \"encap\": \"unknown\", \n            \"encapMode\": \"auto\", \n            \"epgCos\": \"Cos0\", \n            \"epgCosPref\": \"disabled\", \n            \"instrImedcy\": \"lazy\", \n            \"netflowDir\": \"both\", \n            \"netflowPref\": \"disabled\", \n            \"primaryEncap\": \"unknown\", \n            \"resImedcy\": \"immediate\", \n            \"tDn\": \"uni/l2dom-off_fabric_vlans\"\n          }\n        }\n      }, \n      {\n        \"fvRsCustQosPol\": {\n          \"attributes\": {\n            \"tnQosCustomPolName\": \"\"\n          }\n        }\n      }, \n      {\n        \"fvRsBd\": {\n          \"attributes\": {\n            \"status\": \"{{status_is}}\", \n            \"tnFvBDName\": \"{{fvBD_name}}\"\n          }\n        }\n      }\n    ]\n  }\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Single BD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"imdata\": [\n    {\n      \"fvBD\": {\n        \"attributes\": {\n          \"OptimizeWanBandwidth\": \"no\", \n          \"arpFlood\": \"yes\", \n          \"descr\": \"\", \n          \"dn\": \"uni/tn-{{tn_name}}/BD-{{fvBD_name}}\", \n          \"epClear\": \"no\", \n          \"epMoveDetectMode\": \"\", \n          \"intersiteBumTrafficAllow\": \"no\", \n          \"intersiteL2Stretch\": \"no\", \n          \"ipLearning\": \"yes\", \n          \"limitIpLearnToSubnets\": \"yes\", \n          \"llAddr\": \"::\", \n          \"mac\": \"00:22:BD:F8:19:FF\", \n          \"mcastAllow\": \"no\", \n          \"multiDstPktAct\": \"bd-flood\", \n          \"name\": \"{{fvBD_name}}\", \n          \"nameAlias\": \"\", \n          \"ownerKey\": \"\", \n          \"ownerTag\": \"\", \n          \"status\": \"{{status_is}}\", \n          \"type\": \"regular\", \n          \"unicastRoute\": \"no\", \n          \"unkMacUcastAct\": \"flood\", \n          \"unkMcastAct\": \"flood\", \n          \"vmac\": \"not-applicable\"\n        }, \n        \"children\": [\n          {\n            \"fvRsIgmpsn\": {\n              \"attributes\": {\n                \"tnIgmpSnoopPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsCtx\": {\n              \"attributes\": {\n                \"tnFvCtxName\": \"{{tnFvCtx_name}}\"\n              }\n            }\n          }, \n          {\n            \"fvRsBdToEpRet\": {\n              \"attributes\": {\n                \"resolveAct\": \"resolve\", \n                \"tnFvEpRetPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsBDToNdP\": {\n              \"attributes\": {\n                \"tnNdIfPolName\": \"\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+						},
+						"url": {
+							"raw": "https://{{APIC}}/api/mo/.json",
+							"protocol": "https",
+							"host": [
+								"{{APIC}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								".json"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login.json",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"aaaUser\":{\n    \"attributes\":{\n      \"name\":\"{{username}}\",\n      \"pwd\":\"{{password}}\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/aaaLogin.json",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"aaaLogin.json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Empty post for json",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"totalCount\": \"1\",\n  \"imdata\": [\n    {\n      \"dhcpRelayP\": {\n        \"attributes\": {\n          \"descr\": \"\",\n          \"dn\": \"uni/tn-common/relayp-ssharman-dhcp.uktme.cisco.com\",\n          \"mode\": \"visible\",\n          \"name\": \"ssharman-dhcp.uktme.cisco.com\",\n          \"nameAlias\": \"\",\n          \"owner\": \"infra\",\n          \"ownerKey\": \"\",\n          \"ownerTag\": \"\"\n        },\n        \"children\": [\n          {\n            \"dhcpRsProv\": {\n              \"attributes\": {\n                \"addr\": \"192.168.29.10\",\n                \"tDn\": \"uni/tn-ssharman/out-OSPF_to_external_vrf-ssharman/instP-permit_to_0.0.0.0_0\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/mo/.json?rsp-subtree=modified",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						".json"
+					],
+					"query": [
+						{
+							"key": "rsp-subtree",
+							"value": "modified",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Post to create fvAp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvAp\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-micdoher/ap-esx-infrastructure\", \n      \"name\": \"esx-infrastructure\", \n      \"nameAlias\": \"\", \n      \"ownerKey\": \"\", \n      \"ownerTag\": \"\", \n      \"prio\": \"unspecified\", \n      \"status\": \"created\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/mo/.json?rsp-subtree=modified",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						".json"
+					],
+					"query": [
+						{
+							"key": "rsp-subtree",
+							"value": "modified",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Post to create fvAEPg",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"descr\": \"\",\n      \"dn\": \"uni/tn-micdoher/ap-esx-infrastructure/epg-vMotion\",\n      \"fwdCtrl\": \"\",\n      \"isAttrBasedEPg\": \"no\",\n      \"matchT\": \"AtleastOne\",\n      \"name\": \"vMotion\",\n      \"nameAlias\": \"\",\n      \"pcEnfPref\": \"unenforced\",\n      \"prefGrMemb\": \"exclude\",\n      \"prio\": \"unspecified\",\n      \"status\": \"created\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/mo/.json?rsp-subtree=modified",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						".json"
+					],
+					"query": [
+						{
+							"key": "rsp-subtree",
+							"value": "modified",
+							"equals": true
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Web EPG",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"fvAEPg\": {\n    \"attributes\": {\n      \"descr\": \"\", \n      \"dn\": \"uni/tn-Ciscolive/ap-MyApp/epg-Web\", \n      \"fwdCtrl\": \"\", \n      \"isAttrBasedEPg\": \"no\", \n      \"matchT\": \"AtleastOne\", \n      \"name\": \"Web\", \n      \"nameAlias\": \"\", \n      \"pcEnfPref\": \"unenforced\", \n      \"prefGrMemb\": \"exclude\", \n      \"prio\": \"unspecified\",\n      \"status\": \"deleted\"\n    }, \n    \"children\": [\n      {\n        \"fvRsDomAtt\": {\n          \"attributes\": {\n            \"classPref\": \"encap\", \n            \"delimiter\": \"\", \n            \"encap\": \"unknown\", \n            \"encapMode\": \"auto\", \n            \"epgCos\": \"Cos0\", \n            \"epgCosPref\": \"disabled\", \n            \"instrImedcy\": \"lazy\", \n            \"netflowDir\": \"both\", \n            \"netflowPref\": \"disabled\", \n            \"primaryEncap\": \"unknown\", \n            \"resImedcy\": \"immediate\", \n            \"tDn\": \"uni/vmmp-VMware/dom-Ciscolive-vds-01\"\n          }\n        }\n      }, \n      {\n        \"fvRsCustQosPol\": {\n          \"attributes\": {\n            \"tnQosCustomPolName\": \"\"\n          }\n        }\n      }, \n      {\n        \"fvRsBd\": {\n          \"attributes\": {\n            \"tnFvBDName\": \"192.168.10.x_24\"\n          }\n        }\n      }\n    ]\n  }\n}\n\n"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/mo/.json",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						".json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Web EPG - show created objects",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"imdata\": [\n    {\n      \"fvAEPg\": {\n        \"attributes\": {\n          \"descr\": \"\", \n          \"dn\": \"uni/tn-Ciscolive/ap-MyApp/epg-App\", \n          \"fwdCtrl\": \"\", \n          \"isAttrBasedEPg\": \"no\", \n          \"matchT\": \"AtleastOne\", \n          \"name\": \"App\", \n          \"nameAlias\": \"\", \n          \"pcEnfPref\": \"unenforced\", \n          \"prefGrMemb\": \"exclude\", \n          \"prio\": \"unspecified\",\n          \"status\": \"modified\"\n        }, \n        \"children\": [\n          {\n            \"fvRsProv\": {\n              \"attributes\": {\n                \"matchT\": \"AtleastOne\", \n                \"prio\": \"unspecified\", \n                \"tnVzBrCPName\": \"shared_L3out\",\n                \"status\": \"created,modified\"\n              }\n            }\n          }, \n          {\n            \"fvRsDomAtt\": {\n              \"attributes\": {\n                \"classPref\": \"encap\", \n                \"delimiter\": \"\", \n                \"encap\": \"unknown\", \n                \"encapMode\": \"auto\", \n                \"epgCos\": \"Cos0\", \n                \"epgCosPref\": \"disabled\", \n                \"instrImedcy\": \"lazy\", \n                \"netflowDir\": \"both\", \n                \"netflowPref\": \"disabled\", \n                \"primaryEncap\": \"unknown\", \n                \"resImedcy\": \"immediate\", \n                \"tDn\": \"uni/vmmp-VMware/dom-Ciscolive-vds-01\"\n              }\n            }\n          }, \n          {\n            \"fvRsCustQosPol\": {\n              \"attributes\": {\n                \"tnQosCustomPolName\": \"\"\n              }\n            }\n          }, \n          {\n            \"fvRsBd\": {\n              \"attributes\": {\n                \"tnFvBDName\": \"192.168.11.x_24\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  ], \n  \"totalCount\": \"1\"\n}\n"
+				},
+				"url": {
+					"raw": "https://{{APIC}}/api/mo/.json?rsp-subtree=modified",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						".json"
+					],
+					"query": [
+						{
+							"key": "rsp-subtree",
+							"value": "modified",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvTenant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvTenant.json?",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvTenant.json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvCtx",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvCtx.json",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvCtx.json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAp in all Tenants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvAp.json?",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvAp.json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAp in specific Tenant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/mo/uni/tn-Ciscolive/.json?query-target=children&target-subtree-class=fvAp",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-Ciscolive",
+						".json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "children",
+							"equals": true
+						},
+						{
+							"key": "target-subtree-class",
+							"value": "fvAp",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAEPg in specific Tenant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvAEPg.json?query-target-filter=and(wcard(fvAEPg.dn,\"tn-Ciscolive\"))",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvAEPg.json"
+					],
+					"query": [
+						{
+							"key": "query-target-filter",
+							"value": "and(wcard(fvAEPg.dn,\"tn-Ciscolive\"))",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAEPg in Ciscolive",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://{{APIC}}/api/mo/uni/tn-ssharman.json?query-target=subtree&target-subtree-class=fvAEPg",
+					"protocol": "http",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"mo",
+						"uni",
+						"tn-ssharman.json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "subtree",
+							"equals": true
+						},
+						{
+							"key": "target-subtree-class",
+							"value": "fvAEPg",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAEPg in specific Tenant and fvAp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/mo/uni/tn-ssharman/ap-esx-infrastructure.json?query-target=children&target-subtree-class=fvAEPg",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-ssharman",
+						"ap-esx-infrastructure.json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "children",
+							"equals": true
+						},
+						{
+							"key": "target-subtree-class",
+							"value": "fvAEPg",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAEPg config in specific Tenant and fvAp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/mo/uni/tn-ssharman/ap-esx-infrastructure/epg-vMotion.json?query-target=children",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-ssharman",
+						"ap-esx-infrastructure",
+						"epg-vMotion.json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "children",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvAEPg path in a specific Tenant and fvAp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/mo/uni/tn-ssharman/ap-esx-infrastructure/epg-Host-mgmt.json?query-target=children&target-subtree-class=fvRsPathAtt",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-ssharman",
+						"ap-esx-infrastructure",
+						"epg-Host-mgmt.json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "children",
+							"equals": true
+						},
+						{
+							"key": "target-subtree-class",
+							"value": "fvRsPathAtt",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get children of a fvAEPg in specific Tenant and fvAp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/mo/uni/tn-ssharman/ap-esx-infrastructure/epg-Host-mgmt.json?query-target=children",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"mo",
+						"uni",
+						"tn-ssharman",
+						"ap-esx-infrastructure",
+						"epg-Host-mgmt.json"
+					],
+					"query": [
+						{
+							"key": "query-target",
+							"value": "children",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvRsPathAtt in all Tenants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvRsPathAtt.json?",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvRsPathAtt.json"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvRsPathAtt for all VLANs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvRsPathAtt.json?query-target-filter=and(wcard(fvRsPathAtt.encap,\"vlan-\"))",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvRsPathAtt.json"
+					],
+					"query": [
+						{
+							"key": "query-target-filter",
+							"value": "and(wcard(fvRsPathAtt.encap,\"vlan-\"))",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvRsPathAtt for a specific VLAN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvRsPathAtt.json?query-target-filter=and(eq(fvRsPathAtt.encap,\"vlan-2002\"))",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvRsPathAtt.json"
+					],
+					"query": [
+						{
+							"key": "query-target-filter",
+							"value": "and(eq(fvRsPathAtt.encap,\"vlan-2002\"))",
+							"equals": true
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Get fvIfConn for a specific vlan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://{{APIC}}/api/node/class/fvIfConn.json?query-target-filter=and(wcard(fvIfConn.dn,\"vlan-33\"))",
+					"protocol": "https",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"api",
+						"node",
+						"class",
+						"fvIfConn.json"
+					],
+					"query": [
+						{
+							"key": "query-target-filter",
+							"value": "and(wcard(fvIfConn.dn,\"vlan-33\"))",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://{{APIC}}//api/node/class/aaaModLR.json?query-target-filter=eq(aaaModLR.user,\"ansible\")&order-by=aaaModLR.created|desc",
+					"protocol": "http",
+					"host": [
+						"{{APIC}}"
+					],
+					"path": [
+						"",
+						"api",
+						"node",
+						"class",
+						"aaaModLR.json"
+					],
+					"query": [
+						{
+							"key": "query-target-filter",
+							"value": "eq(aaaModLR.user,\"ansible\")",
+							"equals": true
+						},
+						{
+							"key": "order-by",
+							"value": "aaaModLR.created|desc",
+							"equals": true
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}
