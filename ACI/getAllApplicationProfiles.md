@@ -1,4 +1,4 @@
-# Get all Applicate Profiles
+# Get all Application Profiles
 
 https://{{APIC}}/api/node/class/fvAp.json?
 
