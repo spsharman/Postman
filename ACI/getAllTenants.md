@@ -32,25 +32,6 @@ https://{{APIC}}/api/node/class/fvTenant.json?
                 "attributes": {
                     "childAction": "",
                     "descr": "",
-                    "dn": "uni/tn-fgandola",
-                    "extMngdBy": "",
-                    "lcOwn": "local",
-                    "modTs": "2017-09-21T12:00:55.162+00:00",
-                    "monPolDn": "uni/tn-common/monepg-default",
-                    "name": "fgandola",
-                    "nameAlias": "",
-                    "ownerKey": "",
-                    "ownerTag": "",
-                    "status": "",
-                    "uid": "17846"
-                }
-            }
-        },
-        {
-            "fvTenant": {
-                "attributes": {
-                    "childAction": "",
-                    "descr": "",
                     "dn": "uni/tn-common",
                     "extMngdBy": "",
                     "lcOwn": "local",
