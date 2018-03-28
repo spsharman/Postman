@@ -1,2 +1,1 @@
 # Postman
-Postman collection

@@ -1,6 +1,6 @@
 # ACI Posts
 
-A collection of various APIC posts that I use on a regular basis
+A collection of various APIC API calls that I use on a regular basis.
 
 ```
 POST https://{{APIC}}/api/aaaLogin.json
@@ -14,6 +14,7 @@ Variable  | Description
 --------|-------------------------
 apName  | Application Profile name
 bdName  | Bridge Domain name
+contractName  | Contract name
 epgName | Endpoint Group name
 status  | created/modified/deleted  
 tnName  | Tenant name  

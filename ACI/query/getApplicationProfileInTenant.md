@@ -2,7 +2,11 @@
 
 https://{{APIC}}/api/node/mo/uni/tn-{{tnName}}/.json?query-target=children&target-subtree-class=fvAp
 
+## Example query
+
+```
 https://{{APIC}}/api/node/mo/uni/tn-Ciscolive/.json?query-target=children&target-subtree-class=fvAp
+```
 
 ## Example output
 
